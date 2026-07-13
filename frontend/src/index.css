@@ -1,0 +1,41 @@
+@import 'tailwindcss';
+
+@theme {
+  /* Define light mode values directly in the theme block */
+  --color-brand-text: #6b6375;
+  --color-brand-heading: #08060d;
+  --color-brand-bg: #ffffff;
+  --color-brand-border: #e5e4e7;
+  --color-brand-code: #f4f3ec;
+  --color-brand-accent: #aa3bff;
+  --color-brand-accent-bg: rgba(170, 59, 255, 0.1);
+  --color-brand-accent-border: rgba(170, 59, 255, 0.5);
+
+  --font-sans: system-ui, 'Segoe UI', Roboto, sans-serif;
+  --font-heading: system-ui, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: ui-monospace, Consolas, monospace;
+}
+
+/* Override the theme values for dark mode system users */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-brand-text: #9ca3af;
+    --color-brand-heading: #f3f4f6;
+    --color-brand-bg: #16171d;
+    --color-brand-border: #2e303a;
+    --color-brand-code: #1f2028;
+    --color-brand-accent: #c084fc;
+    --color-brand-accent-bg: rgba(192, 132, 252, 0.15);
+    --color-brand-accent-border: rgba(192, 132, 252, 0.5);
+  }
+}
+
+/* Global Reset safely hooking into Tailwind v4 variables */
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  background-color: var(--color-brand-bg);
+  color: var(--color-brand-text);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}

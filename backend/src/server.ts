@@ -12,14 +12,14 @@ app.use(urlencoded({ extended: true }));
 
 app.get('/health', (req, res) => {
   res.json({
-    fine: "I am fine."
+    message: "Server: I am fine."
   });
 });
 
 app.get('/api/notes', async (req, res) => {
   const notes = await getNotes();
   res.status(200).json({
-    message: "sent",
+    message: "Server: sent",
     notes
   });
 });
@@ -27,8 +27,8 @@ app.get('/api/notes', async (req, res) => {
 app.post('/api/notes', async (req, res) => {
   const newNote = req.body;
   const result = await postNote(newNote);
-  res.status(200).json({
-    message: 'recieved',
+  res.status(201).json({
+    message: 'Server: recieved',
     result
   });
 });
