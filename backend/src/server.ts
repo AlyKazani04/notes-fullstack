@@ -1,7 +1,7 @@
 import express, { urlencoded } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
-import { getNotes, postNote } from './db/dbHelpers.ts';
+import { getNotes, postNote, removeNote, updateNote } from './db/dbHelpers.ts';
 
 const app = express();
 app.use(cors());
@@ -30,6 +30,23 @@ app.post('/api/notes', async (req, res) => {
   res.status(201).json({
     message: 'Server: recieved',
     result
+  });
+});
+
+app.patch('/api/notes', async (req, res) => {
+  const changes = req.body;
+  const result = await updateNote(changes);
+  res.status(200).json({
+    message: 'Server: updated',
+    result
+  })
+});
+
+app.delete('/api/notes', async (req, res) => {
+  const noteToDelete = req.body;
+  await removeNote(noteToDelete);
+  res.status(200).json({
+    message: 'Server: deleted'
   });
 });
 
