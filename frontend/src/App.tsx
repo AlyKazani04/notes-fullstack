@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import type { Note } from './types/Note.ts';
 import Card from './components/Card.tsx';
+import newNotePopup from './components/newNotePopup.tsx';
 
 const API_URL = import.meta.env.VITE_BASE_URL ?? 'http://localhost:3000';
 
@@ -34,11 +35,15 @@ function App() {
   }, [])
 
   return (
-    <main className="max-w-4xl mx-auto p-6">
-      <header>
-        <h1 className="text-3xl font-bold tracking-tight text-brand-heading mb-6 text-center">
+    <main className="max-w-0.8 mx-auto p-6">
+      <header className='font-bold text-4xl text-white my-5 flex items-center jusify-center relative'>
+        <h1 className="text-5xl text-center mx-auto px-2 my-5">
           My Notes
         </h1>
+        <button
+          className='absolute text-black bg-white right-8 px-2 rounded-xl'
+          onClick={newNotePopup}>
+          +</button>
       </header>
 
       {loading && (
