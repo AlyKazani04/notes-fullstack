@@ -18,28 +18,47 @@ app.get('/health', (req, res) => {
 
 app.get('/api/notes', async (req, res) => {
   const notes = await getNotes();
-  res.status(200).json({
-    message: "Server: sent",
-    notes
-  });
+  if (notes) {
+    res.status(200).json({
+      message: "Server: sent",
+      notes
+    });
+  } else {
+    res.status(400).json({
+      message: 'Server: Bad Request',
+    });
+  }
 });
 
 app.post('/api/notes', async (req, res) => {
   const newNote = req.body;
   const result = await postNote(newNote);
-  res.status(201).json({
-    message: 'Server: recieved',
-    result
-  });
+
+  if (result) {
+    res.status(201).json({
+      message: 'Server: recieved',
+      result
+    });
+  } else {
+    res.status(400).json({
+      message: 'Server: Bad Request',
+    });
+  }
 });
 
 app.patch('/api/notes', async (req, res) => {
   const changes = req.body;
   const result = await updateNote(changes);
-  res.status(200).json({
-    message: 'Server: updated',
-    result
-  })
+  if (result) {
+    res.status(200).json({
+      message: 'Server: updated',
+      result
+    })
+  } else {
+    res.status(400).json({
+      message: 'Server: Bad Request',
+    });
+  }
 });
 
 app.delete('/api/notes', async (req, res) => {

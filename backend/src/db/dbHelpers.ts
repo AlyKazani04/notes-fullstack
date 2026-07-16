@@ -13,7 +13,7 @@ export const getNotes = async () => {
       .findMany();
     return notes;
   } catch (e) {
-    console.error('Failed to get Notes', e);
+    console.error('Failed to get Notes\n', e);
   }
 }
 
@@ -28,7 +28,7 @@ export const postNote = async (newNote: Note) => {
       });
     return res;
   } catch (e) {
-    console.error('Failed to post Note', e);
+    console.error('Failed to post Note\n', e);
   }
 }
 
@@ -44,7 +44,7 @@ export const updateNote = async (changes: Note) => {
       });
     return res;
   } catch (e) {
-    console.error('Failed to update note.', e);
+    console.error('Failed to update note.\n', e);
   }
 }
 
@@ -55,6 +55,6 @@ export const removeNote = async (noteToDelete: Note) => {
         where: { id: noteToDelete.id },
       });
   } catch (e) {
-    console.error('Failed to delete note.', e);
+    console.error('Failed to delete note.\n', e);
   }
 }
