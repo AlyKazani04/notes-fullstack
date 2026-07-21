@@ -1,11 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import type { Note } from "./types/Note.ts";
 import Card from "./components/Card.tsx";
 import NewNotePopup from "./components/NewNotePopup.tsx";
 
 const API_URL = import.meta.env.VITE_BASE_URL ?? "http://localhost:3000";
-
-
 
 function App() {
   const [notes, setNotes] = useState<Note[]>([]);
@@ -13,33 +11,14 @@ function App() {
   const [error, setError] = useState<string | null>(null);
   const [isNewNoteOpen, setIsNewNoteOpen] = useState(false);
 
-  const saveNote = (note: { title: string; content: string }) => {
-    fetch(`${API_URL}/api/notes`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(note),
-    })
-      .then((res) => {
-        if (!res.ok) throw new Error(`Request failed: ${res.status}`);
-
-        return res.json();
-      })
-      .then((jsonResponse) => {
-        const newNote: Note = jsonResponse.body.result;
-        setNotes((prevNotes) => [...prevNotes, newNote]);
-      })
-      .catch((e) => {
-          console.error("Failed to save note:", e);
-        });
-  };
-
-  useEffect(() => {
-    const controller = new AbortController();
+  const fetchNotes = useCallback((signal?:AbortSignal) => {
+    setLoading(true);
+    setError(null);
 
     fetch(`${API_URL}/api/notes`, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
-      signal: controller.signal,
+      signal,
     })
       .then((res) => {
         if (!res.ok) throw new Error(`Request failed: ${res.status}`);
@@ -53,13 +32,40 @@ function App() {
         }
       })
       .finally(() => setLoading(false));
+  }, []);
 
+  useEffect(() => {
+    const controller = new AbortController();
+    fetchNotes(controller.signal);
     return () => controller.abort();
-  }, [notes]);
+  }, [fetchNotes]);
+
+  const saveNote = (note: { title: string; content: string }) => {
+    fetch(`${API_URL}/api/notes`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(note),
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error(`Request failed: ${res.status}`);
+
+        return res.json();
+      })
+      .then((jsonResponse) => {
+        const newNote: Note = jsonResponse.result;
+        setNotes((prevNotes) => [...prevNotes, newNote]);
+        setIsNewNoteOpen(false);
+      })
+      .catch((e) => {
+        console.error("Failed to save note:", e);
+      });
+  };
+
+  
 
   return (
-    <main className="max-w-0.8 mx-auto p-6">
-      <header className="font-bold text-4xl text-white my-5 flex items-center jusify-center relative">
+    <main className="max-w-5xl mx-auto p-6">
+      <header className="font-bold text-4xl text-white my-5 flex items-center justify-center relative">
         <h1 className="text-5xl text-center mx-auto px-2 my-5">My Notes</h1>
         <button
           className="absolute text-black 
