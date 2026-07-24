@@ -12,9 +12,50 @@ datasource db {
   provider = "postgresql"
 }
 
+model User {
+  id           Int       @id @default(autoincrement())
+  email        String    @unique
+  passwordHash String    @map("password_hash")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+  deletedAt    DateTime? @map("deleted_at")
+  
+  notes        Note[]
+  folders      Folder[]
+
+  @@map("users")
+}
+
+model Folder {
+  id        Int       @id @default(autoincrement())
+  userId    Int       @map("user_id")
+  name      String
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+  
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  notes     Note[]
+
+  @@unique([id, userId])
+  @@index([userId])
+  @@map("folders")
+}
+
 model Note {
-  id        Int      @id @default(autoincrement())
+  id        Int       @id @default(autoincrement())
+  userId    Int       @map("user_id")
+  folderId  Int?      @map("folder_id")
   title     String
   content   String
-  createdAt DateTime @default(now())
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+  
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  folder    Folder?   @relation(fields: [folderId, userId], references: [id, userId], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([folderId])
+  @@map("notes")
 }
