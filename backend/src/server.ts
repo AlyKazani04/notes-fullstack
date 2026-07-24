@@ -1,4 +1,5 @@
 import express, { urlencoded } from 'express';
+import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import helmet from 'helmet';
 import { getNoteByID, getNotes, postNote, removeNoteByID, updateNoteByID } from './db/dbHelpers.ts';
@@ -8,6 +9,7 @@ const app = express();
 app.use(cors());
 app.use(helmet());
 
+app.use(cookieParser());
 app.use(express.json());
 app.use(urlencoded({ extended: true }));
 
