@@ -1,7 +1,11 @@
 import { Request, Response, NextFunction } from 'express';
-import { verifyToken } from '../utils/jwt.ts';
+import { UserSession, verifyToken } from '../utils/jwt.ts';
 
-export const validateToken = (req: Request, res: Response, next: NextFunction) => {
+export interface AuthenticatedRequest extends Request {
+  user?: UserSession;
+}
+
+export const authenticateToken = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   const token = req.cookies?.token;
 
   if (!token) {
@@ -11,14 +15,20 @@ export const validateToken = (req: Request, res: Response, next: NextFunction) =
   }
 
   try {
-    const decoded = verifyToken(token);
-    // TODO: Research this Request type mismatch
-    req.userId = decoded.userId;
+    const session = verifyToken(token);
+    req.user = session;
 
     next();
   } catch (e) {
+    if (e instanceof Error && e.message.includes('JWT_SECRET')) {
+      return res.status(500).json({
+        message: `Server: Configuration Error: ${e.message}`
+      })
+    }
+
     return res.status(401).json({
-      message: "Server: Invalid or expired token."
-    })
+      message: "Server: Invalid or expired token.",
+      error: e instanceof Error ? e.message : String(e)
+    });
   }
 }
