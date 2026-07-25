@@ -3,6 +3,7 @@ import { env } from '../../env.ts';
 
 export interface UserSession {
   id: number;
+  username: string;
   email: string;
 }
 
