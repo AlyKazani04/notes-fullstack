@@ -1,9 +1,9 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response } from 'express';
 import { hashPassword } from '../utils/passwords.ts';
 import { prisma as db } from '../db/db.ts';
 import { generateToken, UserSession } from '../utils/jwt.ts';
 
-export const register = async (req: Request, res: Response, next: NextFunction) => {
+export const register = async (req: Request, res: Response) => {
   try {
     const { name, email, password } = req.body;
 
@@ -53,3 +53,4 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
     res.status(500).json({ error: 'Failed to Create User' });
   }
 }
+
