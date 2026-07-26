@@ -15,6 +15,4 @@ router.post('/signup', validateBody(insertUserSchema), register);
 
 router.post('/login', validateBody(loginSchema), login);
 
-router.post('/logout');
-
 export default router;

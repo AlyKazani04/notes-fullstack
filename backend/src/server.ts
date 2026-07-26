@@ -4,6 +4,9 @@ import cors from 'cors';
 import helmet from 'helmet';
 import { getNoteByID, getNotes, postNote, removeNoteByID, updateNoteByID } from './db/dbHelpers.ts';
 import type { CreateNoteInput, Note } from './db/dbHelpers.ts';
+import authRoutes from './routes/authRoutes.ts'
+import noteRoutes from './routes/noteRoutes.ts';
+import userRoutes from './routes/userRoutes.ts';
 
 const app = express();
 app.use(cors());
@@ -19,6 +22,11 @@ app.get('/health', (req, res) => {
   });
 });
 
+app.use('/api/auth', authRoutes);
+app.use('/api/notes', noteRoutes);
+app.use('/api/users', userRoutes);
+
+// TODO: ------- v Routes to nest within noteRoutes and to reevaluate later -------
 app.get('/api/notes', async (req, res) => {
   try {
     const notes = await getNotes();
