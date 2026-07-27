@@ -7,6 +7,7 @@ import type { CreateNoteInput, Note } from './db/dbHelpers.ts';
 import authRoutes from './routes/authRoutes.ts'
 import noteRoutes from './routes/noteRoutes.ts';
 import userRoutes from './routes/userRoutes.ts';
+import folderRoutes from './routes/folderRoutes.ts';
 
 const app = express();
 app.use(cors());
@@ -24,6 +25,7 @@ app.get('/health', (req, res) => {
 
 app.use('/api/auth', authRoutes);
 app.use('/api/notes', noteRoutes);
+app.use('/api/folders', folderRoutes);
 app.use('/api/users', userRoutes);
 
 // TODO: ------- v Routes to nest within noteRoutes and to reevaluate later -------

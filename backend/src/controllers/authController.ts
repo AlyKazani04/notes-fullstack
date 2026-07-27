@@ -1,15 +1,13 @@
 import { Request, Response } from 'express';
 import { comparePasswords, hashPassword } from '../utils/passwords.ts';
-import { prisma as db } from '../db/db.ts';
 import { generateToken, UserSession } from '../utils/jwt.ts';
+import { getUserByEmail, insertUser } from '../db/userQueries.ts';
 
 export const register = async (req: Request, res: Response) => {
   try {
     const { name, email, password } = req.body;
 
-    const existingUser = await db.user.findUnique({
-      where: { email }
-    });
+    const existingUser = await getUserByEmail(email);
 
     if (existingUser) {
       return res.status(409).json({
@@ -19,13 +17,7 @@ export const register = async (req: Request, res: Response) => {
 
     const hashedPassword = await hashPassword(password);
 
-    const user = await db.user.create({
-      data: {
-        name,
-        email,
-        passwordHash: hashedPassword,
-      },
-    });
+    const user = await insertUser({ name, email, hashedPassword });
 
     const sessionDetails: UserSession = {
       id: user.id,
@@ -58,9 +50,7 @@ export const login = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
 
-    const user = await db.user.findUnique({
-      where: { email }
-    });
+    const user = await getUserByEmail(email);
 
     if (!user) {
       return res.status(401).json({
