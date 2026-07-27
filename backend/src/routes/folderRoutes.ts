@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { authenticateToken } from "../middleware/auth.ts";
-import { createFolder, folderById, userFolders } from "../controllers/folderController.ts";
+import { createFolder, folderById, patchFolder, removeFolder, userFolders } from "../controllers/folderController.ts";
 
 const router = Router();
 
@@ -12,9 +12,9 @@ router.get(':id/', folderById);
 
 router.post('/', createFolder);
 
-router.patch('/:id');
+router.patch('/:id', patchFolder);
 
-router.delete('/:id');
+router.delete('/:id', removeFolder);
 
 export default router;
 
