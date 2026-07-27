@@ -1,7 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
+import { ParamsDictionary } from 'express-serve-static-core';
 import { UserSession, verifyToken } from '../utils/jwt.ts';
 
-export interface AuthenticatedRequest extends Request {
+export interface AuthenticatedRequest<P = ParamsDictionary> extends Request<P> {
   user?: UserSession;
 }
 

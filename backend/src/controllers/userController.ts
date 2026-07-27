@@ -24,13 +24,13 @@ export const logout = async (req: AuthenticatedRequest, res: Response) => {
 }
 
 export const profile = async (req: AuthenticatedRequest, res: Response) => {
-  try {
-    if (!req.user || !req.user.id) {
-      return res.status(401).json({
-        message: 'Server: Unauthorized',
-      });
-    }
+  if (!req.user || !req.user.id) {
+    return res.status(401).json({
+      message: 'Server: Unauthorized',
+    });
+  }
 
+  try {
     const user = await getUserByID(req.user.id);
 
     if (!user) {
