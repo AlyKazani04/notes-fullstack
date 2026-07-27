@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { AuthenticatedRequest } from '../middleware/auth';
-import { getUserByID } from '../db/userQueries';
+import { AuthenticatedRequest } from '../middleware/auth.ts';
+import { getUserByID } from '../db/userQueries.ts';
 
 
 export const logout = async (req: AuthenticatedRequest, res: Response) => {

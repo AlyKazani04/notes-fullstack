@@ -10,28 +10,22 @@ export const folderById = async (req: AuthenticatedRequest<{ id: string }>, res:
     });
   }
 
-  const id = parseInt(req.params.id);
-
-  if (isNaN(id)) {
-    return res.status(400).json({
-      message: 'Server: ID must be a valid number',
-    });
-  }
+  const id = parseInt(req.params.id, 10);
 
   try {
     const userId = req.user.id;
 
     const folder = await getFolderById(userId, id);
-    if (folder) {
-      res.status(200).json({
-        message: "Server: Folder Found",
-        folder
-      });
-    } else {
+    if (!folder) {
       res.status(404).json({
         message: 'Server: Folder not found',
       });
     }
+
+    res.status(200).json({
+      message: "Server: Folder Found",
+      folder
+    });
   } catch (e) {
     console.error(e);
     res.status(500).json({
@@ -73,21 +67,15 @@ export const createFolder = async (req: AuthenticatedRequest, res: Response) => 
   }
 
   const { name } = req.body;
-  if (!name || typeof name !== 'string' || name.trim().length === 0) {
-    return res.status(400).json({
-      message: 'Server: Name must be a valid string'
-    });
-  }
 
   try {
     const userId = req.user.id;
 
-    const folder = await insertFolder(userId, name.trim());
-    if (folder) {
-      res.status(201).json({
-        message: "Server: Folder Created",
-      });
-    }
+    const folder = await insertFolder(userId, name);
+    return res.status(201).json({
+      message: "Server: Folder Created",
+      folder
+    });
   } catch (e) {
     console.error(e);
     res.status(500).json({
@@ -103,25 +91,13 @@ export const patchFolder = async (req: AuthenticatedRequest<{ id: string }>, res
     });
   }
 
-  const id = parseInt(req.params.id);
-
-  if (isNaN(id)) {
-    return res.status(400).json({
-      message: 'Server: ID must be a valid number',
-    });
-  }
-
+  const id = parseInt(req.params.id, 10);
   const { name } = req.body;
-  if (!name || typeof name !== 'string' || name.trim().length === 0) {
-    return res.status(400).json({
-      message: 'Server: Name must be a valid string',
-    });
-  }
 
   try {
     const userId = req.user.id;
 
-    const folder = await updateFolder(userId, id, name.trim());
+    const folder = await updateFolder(userId, id, name);
     if (!folder) {
       return res.status(404).json({
         message: 'Server: Folder not found or unauthorized'
@@ -147,13 +123,7 @@ export const removeFolder = async (req: AuthenticatedRequest<{ id: string }>, re
     });
   }
 
-  const id = parseInt(req.params.id);
-
-  if (isNaN(id)) {
-    return res.status(400).json({
-      message: 'Server: ID must be a valid number',
-    });
-  }
+  const id = parseInt(req.params.id, 10);
 
   try {
     const userId = req.user.id;
