@@ -36,3 +36,19 @@ export const insertUser = async (user: UserSelect) => {
 
   return res;
 }
+
+export const updateUser = async (userId: number, data: { name?: string, email?: string, passwordHash?: string }) => {
+  const res = await db.user
+    .update({
+      where: { id: userId },
+      data,
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        createdAt: true,
+      }
+    });
+
+  return res;
+}
