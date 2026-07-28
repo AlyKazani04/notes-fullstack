@@ -40,13 +40,12 @@ export const updateNote = async (noteId: number, userId: number, data: { title?:
   return note;
 };
 
-export const deleteNote = async (noteId: number, userId: number, folderId?: number | null) => {
+export const deleteNote = async (noteId: number, userId: number) => {
   const result = await db.note
     .deleteMany({
       where: {
         id: noteId,
         userId,
-        ...(folderId !== undefined && { folderId: folderId })
       },
     });
 
