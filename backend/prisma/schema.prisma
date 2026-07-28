@@ -8,17 +8,23 @@ generator client {
   output   = "../src/generated/prisma"
 }
 
+generator zod {
+  provider          = "zod-prisma-types"
+  output            = "../src/generated/zod"
+  useMultipleFiles  = false
+  createInputTypes  = true
+}
+
 datasource db {
   provider = "postgresql"
 }
 
 model User {
   id           Int       @id @default(autoincrement())
+  name         String
   email        String    @unique
   passwordHash String    @map("password_hash")
   createdAt    DateTime  @default(now()) @map("created_at")
-  updatedAt    DateTime  @updatedAt @map("updated_at")
-  deletedAt    DateTime? @map("deleted_at")
   
   notes        Note[]
   folders      Folder[]
@@ -31,8 +37,6 @@ model Folder {
   userId    Int       @map("user_id")
   name      String
   createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime  @updatedAt @map("updated_at")
-  deletedAt DateTime? @map("deleted_at")
   
   user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   notes     Note[]
@@ -49,8 +53,6 @@ model Note {
   title     String
   content   String
   createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime  @updatedAt @map("updated_at")
-  deletedAt DateTime? @map("deleted_at")
   
   user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   folder    Folder?   @relation(fields: [folderId, userId], references: [id, userId], onDelete: SetNull)
