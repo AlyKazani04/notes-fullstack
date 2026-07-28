@@ -42,7 +42,7 @@ export const register = async (req: Request, res: Response) => {
     });
   } catch (error) {
     console.error('Registration Error', error);
-    res.status(500).json({ error: 'Failed to Create User' });
+    return res.status(500).json({ error: 'Failed to Create User' });
   }
 }
 
@@ -89,6 +89,6 @@ export const login = async (req: Request, res: Response) => {
     });
   } catch (error) {
     console.error('Login Error', error);
-    res.status(500).json({ error: 'Failed to Log in User' });
+    return res.status(500).json({ error: 'Failed to Log in User' });
   }
 }

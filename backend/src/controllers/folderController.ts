@@ -17,18 +17,18 @@ export const folderById = async (req: AuthenticatedRequest<{ id: string }>, res:
 
     const folder = await getFolderById(userId, id);
     if (!folder) {
-      res.status(404).json({
+      return res.status(404).json({
         message: 'Server: Folder not found',
       });
     }
 
-    res.status(200).json({
+    return res.status(200).json({
       message: "Server: Folder Found",
       folder
     });
   } catch (e) {
     console.error(e);
-    res.status(500).json({
+    return res.status(500).json({
       message: 'Server: Internal Server Error',
     });
   }
@@ -53,7 +53,7 @@ export const userFolders = async (req: AuthenticatedRequest, res: Response) => {
 
   } catch (e) {
     console.error(e);
-    res.status(500).json({
+    return res.status(500).json({
       message: 'Server: Internal Server Error',
     });
   }
@@ -78,7 +78,7 @@ export const createFolder = async (req: AuthenticatedRequest, res: Response) => 
     });
   } catch (e) {
     console.error(e);
-    res.status(500).json({
+    return res.status(500).json({
       message: 'Server: Internal Server Error',
     });
   }
@@ -110,7 +110,7 @@ export const patchFolder = async (req: AuthenticatedRequest<{ id: string }>, res
     });
   } catch (e) {
     console.error(e);
-    res.status(500).json({
+    return res.status(500).json({
       message: 'Server: Internal Server Error',
     });
   }
@@ -135,12 +135,12 @@ export const removeFolder = async (req: AuthenticatedRequest<{ id: string }>, re
       });
     }
 
-    res.status(200).json({
+    return res.status(200).json({
       message: "Server: Folder Deleted",
     });
   } catch (e) {
     console.error(e);
-    res.status(500).json({
+    return res.status(500).json({
       message: 'Server: Internal Server Error',
     });
   }
