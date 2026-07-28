@@ -6,6 +6,7 @@ import authRoutes from './routes/authRoutes.ts'
 import noteRoutes from './routes/noteRoutes.ts';
 import userRoutes from './routes/userRoutes.ts';
 import folderRoutes from './routes/folderRoutes.ts';
+import { errorHandler } from './errorHandler.ts';
 
 const app = express();
 app.use(cors());
@@ -26,6 +27,7 @@ app.use('/api/notes', noteRoutes);
 app.use('/api/folders', folderRoutes);
 app.use('/api/users', userRoutes);
 
+app.use(errorHandler);
 
 export { app };
 export default app;

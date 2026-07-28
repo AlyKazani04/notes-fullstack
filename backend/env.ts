@@ -1,3 +1,4 @@
+import "dotenv/config";
 import z from "zod";
 
 const envSchema = z.object({
@@ -20,7 +21,8 @@ try {
 } catch (e) {
   if (e instanceof z.ZodError) {
     console.log('Invalid env var')
-    console.error(JSON.stringify(e.flatten().fieldErrors, null, 2))
+    console.error(e.flatten().fieldErrors);
+    // console.error(z.treeifyError(e));
 
     e.issues.forEach((err) => {
       const path = err.path.join('.')

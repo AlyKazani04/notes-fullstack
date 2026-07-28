@@ -17,7 +17,7 @@ export const register = async (req: Request, res: Response) => {
 
     const hashedPassword = await hashPassword(password);
 
-    const user = await insertUser({ name, email, hashedPassword });
+    const user = await insertUser(name, email, hashedPassword);
 
     const sessionDetails: UserSession = {
       id: user.id,

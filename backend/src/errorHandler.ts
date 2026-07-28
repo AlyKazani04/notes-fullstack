@@ -1,0 +1,37 @@
+import { Request, Response, NextFunction } from 'express';
+
+export class APIError extends Error {
+  status: number;
+  name: string;
+  message: string;
+
+  constructor(message: string, name: string, status: number) {
+    super();
+    this.message = message;
+    this.name = name;
+    this.status = status;
+  }
+}
+
+export const errorHandler = (err: APIError, req: Request, res: Response, next: NextFunction) => {
+  console.log(err.stack);
+
+  let status = err.status || 500;
+  let message = err.message || 'Internal Server Error';
+
+  if (err.name === 'ValidationError') {
+    status = 400;
+    message = 'Validation Error';
+  }
+
+  if (err.name === 'UnauthorizedError') {
+    status = 401;
+    message = 'Unauthorized Error';
+  }
+
+  return res.status(status).json({
+    error: message,
+    stack: err.stack,
+    details: err.message,
+  });
+}

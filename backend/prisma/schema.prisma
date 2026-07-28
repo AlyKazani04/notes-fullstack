@@ -1,18 +1,13 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
   provider = "prisma-client"
   output   = "../src/generated/prisma"
 }
 
 generator zod {
-  provider          = "zod-prisma-types"
-  output            = "../src/generated/zod"
-  useMultipleFiles  = false
-  createInputTypes  = true
+  provider         = "zod-prisma-types"
+  output           = "../src/generated/zod"
+  createInputTypes = "true"
+  useMultipleFiles = "false"
 }
 
 datasource db {
@@ -20,25 +15,23 @@ datasource db {
 }
 
 model User {
-  id           Int       @id @default(autoincrement())
+  id           Int      @id @default(autoincrement())
+  email        String   @unique
+  passwordHash String   @map("password_hash")
+  createdAt    DateTime @default(now()) @map("created_at")
   name         String
-  email        String    @unique
-  passwordHash String    @map("password_hash")
-  createdAt    DateTime  @default(now()) @map("created_at")
-  
-  notes        Note[]
   folders      Folder[]
+  notes        Note[]
 
   @@map("users")
 }
 
 model Folder {
-  id        Int       @id @default(autoincrement())
-  userId    Int       @map("user_id")
+  id        Int      @id @default(autoincrement())
+  userId    Int      @map("user_id")
   name      String
-  createdAt DateTime  @default(now()) @map("created_at")
-  
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now()) @map("created_at")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   notes     Note[]
 
   @@unique([id, userId])
@@ -47,15 +40,14 @@ model Folder {
 }
 
 model Note {
-  id        Int       @id @default(autoincrement())
-  userId    Int       @map("user_id")
-  folderId  Int?      @map("folder_id")
+  id        Int      @id @default(autoincrement())
+  userId    Int      @map("user_id")
+  folderId  Int?     @map("folder_id")
   title     String
   content   String
-  createdAt DateTime  @default(now()) @map("created_at")
-  
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  folder    Folder?   @relation(fields: [folderId, userId], references: [id, userId], onDelete: SetNull)
+  createdAt DateTime @default(now()) @map("created_at")
+  folder    Folder?  @relation(fields: [folderId, userId], references: [id, userId], onDelete: SetNull)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([folderId])

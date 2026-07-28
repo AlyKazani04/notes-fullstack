@@ -24,14 +24,14 @@ export type UserSelect = {
   hashedPassword: string;
 }
 
-export const insertUser = async (user: UserSelect) => {
+export const insertUser = async (name: string, email: string, hashedPassword: string) => {
   const res = await db.user
     .create({
       data: {
-        name: user.name,
-        email: user.email,
-        passwordHash: user.hashedPassword
-      }
+        name: name,
+        email: email,
+        passwordHash: hashedPassword
+      },
     });
 
   return res;

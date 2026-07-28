@@ -52,25 +52,23 @@ export const postUserNote = async (req: AuthenticatedRequest, res: Response) => 
     });
   }
 
-  const { title, content } = req.body;
+  const { title, content, folderId } = req.body;
+  let folderIdTested = folderId;
 
   try {
     const userId = req.user.id;
-    const folderIdParam = req.query.folderId;
 
-    let folderId: number | null | undefined = undefined;
-
-    if (folderIdParam === 'null') {
-      folderId = null;
-    } else if (typeof folderIdParam === 'string') {
-      const parsed = parseInt(folderIdParam, 10);
+    if (folderId === 'null') {
+      folderIdTested = null;
+    } else if (typeof folderId === 'string') {
+      const parsed = parseInt(folderId, 10);
       if (!isNaN(parsed)) {
-        folderId = parsed;
+        folderIdTested = parsed;
       }
     }
     // If folderIdParam is omitted entirely, folderId stays undefined, fetching all user notes.
 
-    const note = await postNote(title, content, userId, folderId);
+    const note = await postNote(title, content, userId, folderIdTested);
 
     if (!note) {
       return res.status(404).json({
@@ -105,17 +103,17 @@ export const updateUserNote = async (req: AuthenticatedRequest<{ id: string }>, 
 
     const note = await updateNote(noteId, userId, { title, content, folderId });
 
-    if (!note) {
+    return res.status(200).json({
+      message: "Server: Note Updated",
+      note
+    });
+  } catch (e: any) {
+    if (e.code === 'P2025') {
       return res.status(404).json({
         message: "Server: Note not found or unauthorized"
       });
     }
 
-    return res.status(200).json({
-      message: "Server: Note Updated",
-      note
-    });
-  } catch (e) {
     console.error(e);
     return res.status(500).json({
       message: "Internal Server Error"
