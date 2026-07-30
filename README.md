@@ -52,38 +52,43 @@ A modern, secure, and lightning-fast full-stack note-taking application designed
 ## Tech Stack
 
 ### **Frontend**
-* **React** with **TypeScript** for type-safe UI components.
-* **Vite** for rapid bundling and hot module replacement.
-* **TailwindCSS** for modern, responsive styling.
+
+- **React** with **TypeScript** for type-safe UI components.
+- **Vite** for rapid bundling and hot module replacement.
+- **TailwindCSS** for modern, responsive styling.
 
 ### **Backend**
-* **Node.js** & **Express.js** REST API architecture.
-* **TypeScript** for strict type checking across controllers and middleware.
-* **Zod** for robust runtime schema validation and data sanitization.
-* **Prisma ORM** interacting with a **Neon-hosted PostgreSQL** database.
-* **Bcrypt** for secure password hashing and JWT-based authentication.
+
+- **Node.js** & **Express.js** REST API architecture.
+- **TypeScript** for strict type checking across controllers and middleware.
+- **Zod** for robust runtime schema validation and data sanitization.
+- **Prisma ORM** interacting with a **Neon-hosted PostgreSQL** database.
+- **Bcrypt** for secure password hashing and JWT-based authentication.
 
 ---
 
 ## Key Features
 
-* **Secure Authentication**: JWT-based session handling with password hashing and profile management (update name, email, and password).
-* **Folder Organization**: Group notes into custom folders with strict user-ownership validation.
-* **Advanced Note CRUD**: Create, read, update, and delete individual notes or perform **batch deletions** securely.
-* **Contextual Filtering**: Fetch notes dynamically filtered by folder context or view all root notes.
-* **Strict Input Validation**: Every incoming request payload and route parameter is rigorously validated using Zod middleware.
+- **Secure Authentication**: JWT-based session handling with password hashing and profile management (update name, email, and password).
+- **Folder Organization**: Group notes into custom folders with strict user-ownership validation.
+- **Advanced Note CRUD**: Create, read, update, and delete individual notes or perform **batch deletions** securely.
+- **Contextual Filtering**: Fetch notes dynamically filtered by folder context or view all root notes.
+- **Strict Input Validation**: Every incoming request payload and route parameter is rigorously validated using Zod middleware.
 
 ---
 
 ## Getting Started
 
 ### Prerequisites
+
 Make sure you have the following installed on your machine:
-* **Node.js** (v22 or higher)
-* **npm** or **yarn**
-* A **PostgreSQL** database instance (e.g., Neon)
+
+- **Node.js** (v22 or higher)
+- **npm** or **yarn**
+- A **PostgreSQL** database instance (e.g., Neon)
 
 ### 1. Clone the Repository
+
 ```bash
 git clone [https://github.com/AlyKazani04/notes-fullstack.git](https://github.com/AlyKazani04/notes-fullstack.git)
 cd notes-fullstack
@@ -117,14 +122,16 @@ npx prisma migrate dev --name init
 The project is fully containerized using Docker and Docker Compose, managing both the Express backend and Vite frontend services out of the box with live volume mapping for development.
 
 ### Docker Compose Architecture
-* **`backend`**: Runs on port `3000`, built via `backend/Dockerfile` with automated Prisma client generation.
-* **`frontend`**: Runs on port `5173`, built via `frontend/Dockerfile` with Vite configured for polling and external host binding.
+
+- **`backend`**: Runs on port `3000`, built via `backend/Dockerfile` with automated Prisma client generation.
+- **`frontend`**: Runs on port `5173`, built via `frontend/Dockerfile` with Vite configured for polling and external host binding.
 
 ### Starting the Stack
 
 #### Spin Up Containers
 
 Build and launch the entire application stack using a clean build to prevent volume dependency conflicts:
+
 ```bash
 # at project root
 docker compose down -v
@@ -135,7 +142,7 @@ docker compose up
 
 Only the frontend development server will be available at `http://localhost:5173`.
 
-For running the backend separately, just run it in the `backend/` dir using `npm run dev`. 
+For running the backend separately, just run it in the `backend/` dir using `npm run dev`.
 
 ---
 
@@ -143,25 +150,30 @@ For running the backend separately, just run it in the `backend/` dir using `npm
 
 ### **Health Check**
 
-* `GET /health` — To verify that the API is up and running.
+- `GET /health` — To verify that the API is up and running.
 
-### **Auth & User**
+### **Auth**
 
-* `POST /api/auth/register` — Create a new user account
-* `POST /api/auth/login` — Authenticate and receive a JWT token
-* `PATCH /api/users/profile` — Update user name, email, or password
+- `POST /api/auth/register` — Create a new user account
+- `POST /api/auth/login` — Authenticate and receive a JWT token in the HTTP-only cookie
+
+### **User**
+
+- `GET /api/users/me` — Get the user's Profile Info
+- `PATCH /api/users/profile` — Update user name, email, or password
+- `POST /api/users/logout` — Log the user out (invalidate the cookie)
 
 ### **Folders**
 
-* `GET /api/folders` — Retrieve all folders for the authenticated user
-* `POST /api/folders` — Create a new folder
-* `PATCH /api/folders/:id` — Rename a specific folder
-* `DELETE /api/folders/:id` — Delete a folder
+- `GET /api/folders` — Retrieve all folders for the authenticated user
+- `POST /api/folders` — Create a new folder
+- `PATCH /api/folders/:id` — Rename a specific folder
+- `DELETE /api/folders/:id` — Delete a folder
 
 ### **Notes**
 
-* `GET /api/notes` — Retrieve notes (supports `?folderId=X` filtering)
-* `POST /api/notes` — Create a new note
-* `PATCH /api/notes/:id` — Update a note's title, content, or folder placement
-* `DELETE /api/notes/:id` — Delete a single note
-* `POST /api/notes/batch-delete` — Bulk delete multiple notes securely using an array of IDs
+- `GET /api/notes` — Retrieve notes (supports `?folderId=X` filtering)
+- `POST /api/notes` — Create a new note
+- `PATCH /api/notes/:id` — Update a note's title, content, or folder placement
+- `DELETE /api/notes/:id` — Delete a single note
+- `POST /api/notes/batch-delete` — Bulk delete multiple notes securely using an array of IDs
