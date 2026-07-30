@@ -17,7 +17,7 @@ app.use(express.json());
 app.use(urlencoded({ extended: true }));
 
 app.get('/health', (req, res) => {
-  res.json({
+  res.status(200).json({
     message: "Server: I am fine."
   });
 });

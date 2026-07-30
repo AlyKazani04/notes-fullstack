@@ -141,6 +141,10 @@ For running the backend separately, just run it in the `backend/` dir using `npm
 
 ## 📡 API Endpoints Summary
 
+### **Health Check**
+
+* `GET /health` — To verify that the API is up and running.
+
 ### **Auth & User**
 
 * `POST /api/auth/register` — Create a new user account
