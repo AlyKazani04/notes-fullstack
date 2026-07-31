@@ -34,7 +34,7 @@ function AuthShell({ api, onAuthed, pushToast }) {
   return (
     <div className="auth-shell">
       <div className="auth-hero">
-        <div className="hero-mark">MARGINALIA</div>
+        <div className="hero-mark">Notes App</div>
         <div className="hero-cards" aria-hidden="true">
           <div className="hero-tab" />
           <div className="hero-card hc-3" />
