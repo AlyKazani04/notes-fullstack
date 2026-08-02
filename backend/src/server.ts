@@ -8,8 +8,14 @@ import userRoutes from './routes/userRoutes.ts';
 import folderRoutes from './routes/folderRoutes.ts';
 import { errorHandler } from './errorHandler.ts';
 
+const CORS_OPTIONS = {
+  origin: 'http://localhost:5173',
+  credentials: true,
+  optionsSuccessStatus: 200,
+};
+
 const app = express();
-app.use(cors());
+app.use(cors(CORS_OPTIONS));
 app.use(helmet());
 
 app.use(cookieParser());
