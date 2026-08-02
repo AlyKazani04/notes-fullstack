@@ -2,10 +2,10 @@ const FOLDER_COLORS = ["#C98A2C", "#5B7B5A", "#6C87A6", "#A6432F", "#8A6BAE"];
 
 export const uid = () => Math.random().toString(36).slice(2, 10);
 
-export function folderColor(id: string): string {
+export function folderColor(id: string | undefined): string {
   if (!id) return "#8B95A1";
   let hash = 0;
-  for (let i = 0; i < id.length; i++) hash = (hash * 31 + id.charCodeAt(i)) >>> 0;
+  for (let i = 0; i < 10; i++) hash = (hash * 31 + parseInt(id)) >>> 0;
   return FOLDER_COLORS[hash % FOLDER_COLORS.length];
 }
 
