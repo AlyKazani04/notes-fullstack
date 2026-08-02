@@ -13,7 +13,7 @@ export const notes = {
             body: JSON.stringify({title, content, folderId})
         }),
 
-    update: (id: string, title: string, content: string, folderId?: string) =>
+    update: (id: string, title?: string, content?: string, folderId?: string) =>
         request<NoteResponse>(`/api/notes/${id}`, {
             method: 'PATCH',
             body: JSON.stringify({title, content, folderId})
