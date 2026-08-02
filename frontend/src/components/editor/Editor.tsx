@@ -135,7 +135,7 @@ export function Editor({ note, folders, onChange, onDelete, mobileHidden, onBack
               <Loader2 className="spin" size={12} /> Saving…
             </>
           ) : (
-            <>Saved {timeAgo(note.updatedAt)}</>
+            <>Saved {timeAgo(note.createdAt)}</>
           )}
         </span>
         <span className="word-count">{wordCount} words</span>

@@ -151,7 +151,7 @@ export function NoteList({
                     .trim()
                     .slice(0, 88) || "No content yet."}
                 </div>
-                <div className="note-card-meta">{timeAgo(n.updatedAt)}</div>
+                <div className="note-card-meta">{timeAgo(n.createdAt)}</div>
               </div>
             </div>
           ))
