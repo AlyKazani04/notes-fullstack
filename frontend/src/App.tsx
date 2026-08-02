@@ -26,7 +26,7 @@ export default function App() {
     createFolder,
     renameFolder,
     deleteFolder,
-  } = useData(user, pushToast);
+  } = useData(user);
 
   const [selectedFolderId, setSelectedFolderId] = useState<string | undefined>(undefined);
   const [selectedNoteId, setSelectedNoteId] = useState<string | null>(null);
