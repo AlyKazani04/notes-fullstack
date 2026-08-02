@@ -9,7 +9,7 @@ import type { CSSProperties } from "react";
 interface NoteListProps {
   notes: Note[];
   loading: boolean;
-  selectedFolderId: string;
+  selectedFolderId: string | undefined;
   folders: Folder[];
   selectedNoteId: string | null;
   onSelectNote: (id: string) => void;
@@ -59,7 +59,7 @@ export function NoteList({
   }
 
   const headerLabel =
-    selectedFolderId === "all"
+    selectedFolderId === undefined
       ? "All notes"
       : folders.find((f: Folder) => f.id === selectedFolderId)?.name || "Notes";
 

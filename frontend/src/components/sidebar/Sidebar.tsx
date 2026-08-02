@@ -16,8 +16,8 @@ interface SidebarProps {
   user: User | null;
   folders: Folder[];
   foldersLoading: boolean;
-  selectedFolderId: string;
-  onSelectFolder: (id: string) => void;
+  selectedFolderId: string | undefined;
+  onSelectFolder: (id: string | undefined) => void;
   onCreateFolder: (name: string) => Promise<void>;
   onRenameFolder: (id: string, name: string) => Promise<void>;
   onDeleteFolder: (id: string) => Promise<void>;
@@ -95,8 +95,8 @@ export function Sidebar({
 
         <nav className="folder-nav">
           <button
-            className={`nav-row all-notes ${selectedFolderId === "all" ? "active" : ""}`}
-            onClick={() => onSelectFolder("all")}
+            className={`nav-row all-notes ${selectedFolderId === undefined ? "active" : ""}`}
+            onClick={() => onSelectFolder(undefined)}
           >
             <Inbox size={15} />
             <span>All notes</span>

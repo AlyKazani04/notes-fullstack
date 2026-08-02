@@ -28,7 +28,7 @@ export default function App() {
     deleteFolder,
   } = useData(user, pushToast);
 
-  const [selectedFolderId, setSelectedFolderId] = useState<string>("all");
+  const [selectedFolderId, setSelectedFolderId] = useState<string | undefined>(undefined);
   const [selectedNoteId, setSelectedNoteId] = useState<string | null>(null);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
@@ -38,7 +38,7 @@ export default function App() {
   useEffect(() => {
     if (user) {
       loadFolders();
-      loadNotes("all");
+      loadNotes(undefined);
     }
   }, [user, loadFolders, loadNotes]);
 
@@ -46,7 +46,7 @@ export default function App() {
   useEffect(() => {
     if (user) {
       const folderId =
-        selectedFolderId === "all" ? undefined : selectedFolderId;
+        selectedFolderId ? selectedFolderId : undefined;
       loadNotes(folderId);
     }
   }, [selectedFolderId, user, loadNotes]);
@@ -76,13 +76,13 @@ export default function App() {
       if (n.folderId) counts[n.folderId] = (counts[n.folderId] || 0) + 1;
     });
     return counts;
-  }, [notes]);
+  }, []);
 
   // handlers
 
   async function handleNewNote() {
-    const folderId = selectedFolderId === "all" ? null : selectedFolderId;
-    const newNote = await createNote("", "", folderId ?? undefined);
+    const folderId = selectedFolderId ? selectedFolderId : undefined;
+    const newNote = await createNote("New Note", "Note Content", folderId);
     setSelectedNoteId(newNote.id);
     setMobileShowEditor(true);
   }
@@ -120,7 +120,7 @@ export default function App() {
   }
   async function handleDeleteFolder(id: string) {
     await deleteFolder(id);
-    if (selectedFolderId === id) setSelectedFolderId("all");
+    if (selectedFolderId === id) setSelectedFolderId(undefined);
     pushToast("Folder deleted", "success");
   }
 
@@ -149,7 +149,7 @@ export default function App() {
             folders={folders}
             foldersLoading={foldersLoading}
             selectedFolderId={selectedFolderId}
-            onSelectFolder={(id: string) => {
+            onSelectFolder={(id: string | undefined) => {
               setSelectedFolderId(id);
               setSelectedNoteId(null);
               setMobileSidebarOpen(false);

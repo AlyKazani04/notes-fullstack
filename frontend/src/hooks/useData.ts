@@ -15,7 +15,6 @@ export function useData(
   const [notesLoading, setNotesLoading] = useState(false);
 
   const loadFolders = useCallback(async () => {
-    if (!user) return;
     setFoldersLoading(true);
     const res = await foldersApi.getAll();
     setFolders(res.folders);
