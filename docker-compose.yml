@@ -9,7 +9,7 @@ services:
       - ./backend/.env
     volumes:
       - ./backend:/app
-      - /app/node_modules
+      - backend_packages:/app/node_modules
     restart: unless-stopped
 
   frontend:
@@ -22,7 +22,11 @@ services:
       - ./frontend/.env
     volumes:
       - ./frontend:/app
-      - /app/node_modules
+      - frontend_packages:/app/node_modules
     depends_on:
       - backend
     restart: unless-stopped
+
+volumes:
+  backend_packages:
+  frontend_packages:

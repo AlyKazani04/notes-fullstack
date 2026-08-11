@@ -16,7 +16,7 @@ interface SidebarProps {
   user: User | null;
   folders: Folder[];
   foldersLoading: boolean;
-  selectedFolderId: string | undefined;
+  selectedFolderId: string | null | undefined;
   onSelectFolder: (id: string | undefined) => void;
   onCreateFolder: (name: string) => Promise<void>;
   onRenameFolder: (id: string, name: string) => Promise<void>;
@@ -154,7 +154,7 @@ export function Sidebar({
                       <span
                         role="button"
                         tabIndex={0}
-                        className={`icon-btn ${confirmDeleteId === f.id ? "danger-confirm" : ""}`}
+                        className={`${confirmDeleteId === f.id ? "icon-btn danger-confirm" : "icon-btn"}`}
                         onClick={(e) => {
                           e.stopPropagation();
                           if (confirmDeleteId === f.id) {

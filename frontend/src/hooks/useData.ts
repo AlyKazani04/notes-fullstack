@@ -1,13 +1,14 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 import type { User, Folder, Note, DeleteResponse } from "../types";
 import { folders as foldersApi } from "../api/folders";
 import { notes as notesApi } from "../api/notes";
 
 export function useData(
-  user: User | null,
+  _user: User | null,
 ) {
   const [folders, setFolders] = useState<Folder[]>([]);
   const [notes, setNotes] = useState<Note[]>([]);
+  const [allNotes, setAllNotes] = useState<Note[]>([]);
   const [foldersLoading, setFoldersLoading] = useState(false);
   const [notesLoading, setNotesLoading] = useState(false);
 
@@ -22,8 +23,21 @@ export function useData(
     setNotesLoading(true);
     const res = await notesApi.getAll(folderId);
     setNotes(res.notes);
+    if (folderId === undefined) {
+      setAllNotes(res.notes);
+    }
     setNotesLoading(false);
   }, []);
+
+  const noteCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    allNotes.forEach((note) => {
+      if (note.folderId) {
+        counts[note.folderId] = (counts[note.folderId] || 0) + 1;
+      }
+    });
+    return counts;
+  }, [allNotes]);
 
   // create, update, delete, batchDelete, etc.
   // each calls the API, updates local state, and shows a toast.
@@ -31,13 +45,16 @@ export function useData(
     async (
       title: string,
       content: string,
-      folderId?: string,
+      folderId?: string | null,
+      currentFolderId?: string,
     ): Promise<Note> => {
       const res = await notesApi.create(title, content, folderId);
+      setAllNotes((prev) => [res.note, ...prev]);
       setNotes((prev) => [res.note, ...prev]);
+      await loadNotes(currentFolderId);
       return res.note;
     },
-    [],
+    [loadNotes],
   );
 
   const updateNote = useCallback(
@@ -45,32 +62,41 @@ export function useData(
       id: string,
       title: string,
       content: string,
-      folderId?: string,
+      folderId?: string | null,
+      currentFolderId?: string,
     ): Promise<Note> => {
       const res = await notesApi.update(id, title, content, folderId);
+      setAllNotes((prev) =>
+        prev.map((note) => (note.id === id ? res.note : note)),
+      );
       setNotes((prev) =>
         prev.map((note) => (note.id === id ? res.note : note)),
       );
+      await loadNotes(currentFolderId);
       return res.note;
     },
-    [],
+    [loadNotes],
   );
 
   const deleteNote = useCallback(
-    async (id: string): Promise<void> => {
+    async (id: string, currentFolderId?: string): Promise<void> => {
       await notesApi.delete(id);
+      setAllNotes((prev) => prev.filter((note) => note.id !== id));
       setNotes((prev) => prev.filter((note) => note.id !== id));
+      await loadNotes(currentFolderId);
     },
-    [],
+    [loadNotes],
   );
 
   const batchDelete = useCallback(
-    async (ids: string[]): Promise<{ deletedCount: number }> => {
+    async (ids: string[], currentFolderId?: string): Promise<{ deletedCount: number }> => {
       const res: DeleteResponse = await notesApi.batchDelete(ids);
+      setAllNotes((prev) => prev.filter((note) => !ids.includes(note.id)));
       setNotes((prev) => prev.filter((note) => !ids.includes(note.id)));
+      await loadNotes(currentFolderId);
       return { deletedCount: res.deletedCount ?? 0 };
     },
-    [],
+    [loadNotes],
   );
 
   const createFolder = useCallback(
@@ -104,6 +130,7 @@ export function useData(
   return {
     folders,
     notes,
+    noteCounts,
     foldersLoading,
     notesLoading,
     loadFolders,

@@ -9,7 +9,7 @@ import type { CSSProperties } from "react";
 interface NoteListProps {
   notes: Note[];
   loading: boolean;
-  selectedFolderId: string | undefined;
+  selectedFolderId: string | null | undefined;
   folders: Folder[];
   selectedNoteId: string | null;
   onSelectNote: (id: string) => void;
