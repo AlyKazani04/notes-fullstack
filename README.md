@@ -75,6 +75,92 @@ A modern, secure, and lightning-fast full-stack note-taking application designed
 - **Contextual Filtering**: Fetch notes dynamically filtered by folder context or view all root notes.
 - **Strict Input Validation**: Every incoming request payload and route parameter is rigorously validated using Zod middleware.
 
+### Project Structure / Folder Layout
+
+<details>
+  <summary>Click Here</summary>
+
+```Plaintext
+notes-fullstack/
+├── backend/
+│   ├── prisma/
+│   │   ├── migrations/          # Prisma database migrations
+│   │   └── schema.prisma        # Prisma schema definition
+│   ├── src/
+│   │   ├── controllers/         # Route handlers (business logic)
+│   │   │   ├── authController.ts
+│   │   │   ├── folderController.ts
+│   │   │   ├── noteController.ts
+│   │   │   └── userController.ts
+│   │   ├── db/                  # Database access layer
+│   │   │   ├── db.ts
+│   │   │   ├── folderQueries.ts
+│   │   │   ├── noteQueries.ts
+│   │   │   ├── schema.ts
+│   │   │   └── userQueries.ts
+│   │   ├── middleware/          # Express middleware
+│   │   │   ├── auth.ts
+│   │   │   └── validation.ts
+│   │   ├── routes/              # API route definitions
+│   │   │   ├── authRoutes.ts
+│   │   │   ├── folderRoutes.ts
+│   │   │   ├── noteRoutes.ts
+│   │   │   └── userRoutes.ts
+│   │   ├── schemas/             # Validation schemas
+│   │   │   ├── folderSchemas.ts
+│   │   │   ├── noteSchemas.ts
+│   │   │   └── userSchemas.ts
+│   │   ├── utils/               # Helper utilities
+│   │   │   ├── jwt.ts
+│   │   │   └── passwords.ts
+│   │   ├── errorHandler.ts
+│   │   ├── index.ts
+│   │   └── server.ts
+│   ├── .env.example
+│   ├── Dockerfile
+│   ├── env.ts
+│   ├── package.json
+│   └── prisma.config.ts
+├── frontend/
+│   ├── public/
+│   │   └── favicon.svg
+│   ├── src/
+│   │   ├── api/                 # API client & request helpers
+│   │   │   ├── auth.ts
+│   │   │   ├── client.ts
+│   │   │   ├── folders.ts
+│   │   │   ├── index.ts
+│   │   │   └── notes.ts
+│   │   ├── assets/
+│   │   ├── components/          # React components
+│   │   │   ├── auth/
+│   │   │   ├── common/
+│   │   │   ├── editor/
+│   │   │   ├── noteList/
+│   │   │   ├── settings/
+│   │   │   └── sidebar/
+│   │   ├── hooks/                # Custom React hooks
+│   │   │   ├── useAuth.ts
+│   │   │   ├── useData.ts
+│   │   │   └── useToasts.ts
+│   │   ├── types/                # Shared TypeScript types
+│   │   │   └── index.ts
+│   │   ├── utils/                # Helper utilities
+│   │   │   ├── helpers.ts
+│   │   │   └── markdown.ts
+│   │   ├── App.tsx
+│   │   ├── index.css
+│   │   └── main.tsx
+│   ├── Dockerfile
+│   ├── index.html
+│   ├── package.json
+│   └── vite.config.ts
+├── docker-compose.yml
+└── README.md
+```
+
+</details>
+
 ---
 
 ## Getting Started
@@ -98,6 +184,22 @@ cd notes-fullstack
 ### 2. Environment Variables Setup
 
 Create a `.env` file in the both directories from the `.env.example`s and configure the variables.
+
+#### Backend Env
+
+| **Variable**     | **Value**                                                                    |
+| :--------------- | :--------------------------------------------------------------------------- |
+| `DATABASE_URL`   | `postgresql://YOUR_POSTGRES_DEV_DB_URL_HERE`                                 |
+| `PORT`           | `3000 (default, don't reconfigure)`                                          |
+| `JWT_SECRET`     | `64_char_long_randomly_generated_string_here (must be longer than 32 chars)` |
+| `JWT_EXPIRES_IN` | `3d (default, 7d if not specified)`                                          |
+| `BCRYPT_ROUNDS`  | `12 (default, must be between 10-20)`                                        |
+
+#### Frontend Env
+
+| **Variable**    | **Value**                                                                             |
+| :-------------- | :------------------------------------------------------------------------------------ |
+| `VITE_BASE_URL` | `http://localhost:3000 (default link to the backend server, configure appropriately)` |
 
 ### 3. Install Dependencies
 
