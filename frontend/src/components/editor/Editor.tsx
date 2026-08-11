@@ -7,7 +7,7 @@ import type { Note, Folder } from "../../types";
 interface EditorProps {
   note: Note | null;
   folders: Folder[];
-  onChange: (id: string, title?: string, content?: string, folderId?: string) => Promise<void>;
+  onChange: (id: string, title?: string, content?: string, folderId?: string | null) => Promise<void>;
   onDelete: (id: string) => Promise<void>;
   mobileHidden: boolean;
   onBack: () => void;
@@ -16,7 +16,7 @@ interface EditorProps {
 export function Editor({ note, folders, onChange, onDelete, mobileHidden, onBack }: EditorProps) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [folderId, setFolderId] = useState<string>("");
+  const [folderId, setFolderId] = useState<string | null>("");
   const [tab, setTab] = useState("write");
   const [saveState, setSaveState] = useState("saved");
   const [confirmDelete, setConfirmDelete] = useState(false);
@@ -25,7 +25,7 @@ export function Editor({ note, folders, onChange, onDelete, mobileHidden, onBack
   useEffect(() => {
     setTitle(note?.title || "");
     setContent(note?.content || "");
-    setFolderId(note?.folderId ?? "");
+    setFolderId(note?.folderId ? note?.folderId.toString() : null);
     setTab("write");
     setSaveState("saved");
     setConfirmDelete(false);
@@ -85,7 +85,7 @@ export function Editor({ note, folders, onChange, onDelete, mobileHidden, onBack
             scheduleSave({ folderId: val });
           }}
         >
-          <option value="">No folder</option>
+          <option>No folder</option>
           {folders.map((f: Folder) => (
             <option key={f.id} value={f.id}>
               {f.name}

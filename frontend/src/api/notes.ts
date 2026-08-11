@@ -7,11 +7,11 @@ export const notes = {
 
     getById: (id: string) => request<NoteResponse>(`/api/notes/${id}`),
     
-    create: (title: string, content: string, fId?: string) => {
+    create: (title: string, content: string, fId?: string | null) => {
         let folderId;
         if (fId) {
             folderId = parseInt(fId, 10);
-        } else {
+        } else if (fId !== null) {
             folderId = undefined;
         }
 
@@ -21,11 +21,11 @@ export const notes = {
         });
     },
 
-    update: (id: string, title?: string, content?: string, fId?: string) => {
+    update: (id: string, title?: string, content?: string, fId?: string | null) => {
         let folderId;
         if (fId) {
             folderId = parseInt(fId, 10);
-        } else {
+        } else if (fId !== null) {
             folderId = undefined;
         }
 

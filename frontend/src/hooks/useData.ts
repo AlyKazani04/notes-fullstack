@@ -31,7 +31,7 @@ export function useData(
     async (
       title: string,
       content: string,
-      folderId?: string,
+      folderId?: string | null,
     ): Promise<Note> => {
       const res = await notesApi.create(title, content, folderId);
       setNotes((prev) => [res.note, ...prev]);
@@ -45,7 +45,7 @@ export function useData(
       id: string,
       title: string,
       content: string,
-      folderId?: string,
+      folderId?: string | null,
     ): Promise<Note> => {
       const res = await notesApi.update(id, title, content, folderId);
       setNotes((prev) =>

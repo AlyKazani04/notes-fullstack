@@ -28,7 +28,9 @@ export default function App() {
     deleteFolder,
   } = useData(user);
 
-  const [selectedFolderId, setSelectedFolderId] = useState<string | undefined>(undefined);
+  const [selectedFolderId, setSelectedFolderId] = useState<
+    string | null | undefined
+  >(null);
   const [selectedNoteId, setSelectedNoteId] = useState<string | null>(null);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
@@ -45,9 +47,7 @@ export default function App() {
   // reload notes when selected folder changes
   useEffect(() => {
     if (user) {
-      const folderId =
-        selectedFolderId ? selectedFolderId : undefined;
-      loadNotes(folderId);
+      selectedFolderId ? loadNotes(selectedFolderId) : loadNotes();
     }
   }, [selectedFolderId, user, loadNotes]);
 
@@ -68,7 +68,6 @@ export default function App() {
     return () => window.removeEventListener("keydown", onKey);
   }, [user, settingsOpen]);
 
-
   // note counts per folder
   const noteCounts = useMemo(() => {
     const counts: Record<string, number> = {};
@@ -81,7 +80,11 @@ export default function App() {
   // handlers
 
   async function handleNewNote() {
-    const folderId = selectedFolderId ? selectedFolderId : undefined;
+    const folderId = selectedFolderId
+      ? selectedFolderId
+      : selectedFolderId === undefined
+        ? undefined
+        : null;
     const newNote = await createNote("New Note", "Note Content", folderId);
     setSelectedNoteId(newNote.id);
     setMobileShowEditor(true);
@@ -91,7 +94,7 @@ export default function App() {
     id: string,
     title?: string,
     content?: string,
-    folderId?: string,
+    folderId?: string | null,
   ) {
     await updateNote(id, title ?? "", content ?? "", folderId);
   }
@@ -135,13 +138,14 @@ export default function App() {
 
   return (
     <div className="app-root">
-      <Toasts
-        toasts={toasts}
-        onDismiss={dismissToast}
-      />
+      <Toasts toasts={toasts} onDismiss={dismissToast} />
 
       {!user ? (
-        <AuthShell onLogin={login} onRegister={register} pushToast={pushToast} />
+        <AuthShell
+          onLogin={login}
+          onRegister={register}
+          pushToast={pushToast}
+        />
       ) : (
         <div className="dashboard">
           <Sidebar
