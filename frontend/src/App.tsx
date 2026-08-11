@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "./hooks/useAuth";
 import { useToasts } from "./hooks/useToasts";
 import { useData } from "./hooks/useData";
@@ -15,6 +15,7 @@ export default function App() {
   const {
     folders,
     notes,
+    noteCounts,
     foldersLoading,
     notesLoading,
     loadFolders,
@@ -68,15 +69,6 @@ export default function App() {
     return () => window.removeEventListener("keydown", onKey);
   }, [user, settingsOpen]);
 
-  // note counts per folder
-  const noteCounts = useMemo(() => {
-    const counts: Record<string, number> = {};
-    notes.forEach((n) => {
-      if (n.folderId) counts[n.folderId] = (counts[n.folderId] || 0) + 1;
-    });
-    return counts;
-  }, []);
-
   // handlers
 
   async function handleNewNote() {
@@ -85,7 +77,12 @@ export default function App() {
       : selectedFolderId === undefined
         ? undefined
         : null;
-    const newNote = await createNote("New Note", "Note Content", folderId);
+    const newNote = await createNote(
+      "New Note",
+      "Note Content",
+      folderId,
+      selectedFolderId ?? undefined,
+    );
     setSelectedNoteId(newNote.id);
     setMobileShowEditor(true);
   }
@@ -96,18 +93,24 @@ export default function App() {
     content?: string,
     folderId?: string | null,
   ) {
-    await updateNote(id, title ?? "", content ?? "", folderId);
+    await updateNote(
+      id,
+      title ?? "",
+      content ?? "",
+      folderId,
+      selectedFolderId ?? undefined,
+    );
   }
 
   async function handleDeleteNote(id: string) {
-    await deleteNote(id);
+    await deleteNote(id, selectedFolderId ?? undefined);
     setSelectedNoteId(null);
     setMobileShowEditor(false);
     pushToast("Note deleted", "success");
   }
 
   async function handleBatchDelete(ids: string[]) {
-    const { deletedCount } = await batchDelete(ids);
+    const { deletedCount } = await batchDelete(ids, selectedFolderId ?? undefined);
     if (ids.includes(selectedNoteId!)) setSelectedNoteId(null);
     pushToast(
       `Deleted ${deletedCount} note${deletedCount === 1 ? "" : "s"}`,
