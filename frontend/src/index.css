@@ -159,6 +159,10 @@ textarea {
   background: rgba(30, 42, 47, 0.08);
   color: var(--ink);
 }
+.icon-btn.danger-confirm {
+  background: var(--danger);
+  color: #fff;
+}
 .mobile-only {
   display: none;
 }
