@@ -9,7 +9,7 @@ export const auth = {
         }),
     
     register: (name: string, email: string, password: string) => 
-        request<AuthResponse>('/api/auth/register', {
+        request<AuthResponse>('/api/auth/signup', {
             method: 'POST',
             body: JSON.stringify({name, email, password})
         }),
