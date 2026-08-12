@@ -76,9 +76,6 @@ export function LoginForm({
       <button className="btn btn-primary btn-block" disabled={busy}>
         {busy ? <Loader2 className="spin" size={16} /> : "Log in"}
       </button>
-      <p className="auth-hint">
-        Try any email + an 8-character password — this runs on mock data.
-      </p>
     </form>
   );
 }

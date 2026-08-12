@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import { ArrowLeft, PenLine, Eye, Trash2, Loader2, FolderOpen } from "lucide-react";
+import { PenLine, Eye, Trash2, Loader2, FolderOpen } from "lucide-react";
 import { timeAgo } from '../../utils/helpers';
 import { renderMarkdown } from "../../utils/markdown";
 import type { Note, Folder } from "../../types";
@@ -10,10 +10,9 @@ interface EditorProps {
   onChange: (id: string, title?: string, content?: string, folderId?: string | null) => Promise<void>;
   onDelete: (id: string) => Promise<void>;
   mobileHidden: boolean;
-  onBack: () => void;
 }
 
-export function Editor({ note, folders, onChange, onDelete, mobileHidden, onBack }: EditorProps) {
+export function Editor({ note, folders, onChange, onDelete, mobileHidden }: EditorProps) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [folderId, setFolderId] = useState<string | null>("");
@@ -64,9 +63,6 @@ export function Editor({ note, folders, onChange, onDelete, mobileHidden, onBack
   return (
     <section className={`editor ${mobileHidden ? "mobile-hidden" : ""}`}>
       <div className="editor-topbar">
-        <button className="icon-btn mobile-only" onClick={onBack}>
-          <ArrowLeft size={18} />
-        </button>
         <input
           className="editor-title"
           value={title}
@@ -135,7 +131,7 @@ export function Editor({ note, folders, onChange, onDelete, mobileHidden, onBack
               <Loader2 className="spin" size={12} /> Saving…
             </>
           ) : (
-            <>Saved {timeAgo(note.createdAt)}</>
+            <>Created At {timeAgo(note.createdAt)}</>
           )}
         </span>
         <span className="word-count">{wordCount} words</span>

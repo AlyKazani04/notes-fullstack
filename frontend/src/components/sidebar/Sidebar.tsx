@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { FolderSkeleton } from "../common/Skeletons";
+import { ThemeToggle } from "../common/ThemeToggle";
 import { folderColor } from "../../utils/helpers";
 import type { Folder, User } from "../../types";
 import type { CSSProperties, FormEvent } from "react";
@@ -80,8 +81,9 @@ export function Sidebar({
     <aside className={`sidebar ${mobileOpen ? "mobile-open" : ""}`}>
       <div className="sidebar-scrim" onClick={onCloseMobile} />
       <div className="sidebar-inner">
-        <div className="brand-row">
-          <span className="brand-mark">NOTES</span>
+        <div className="brand-row" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <span className="brand-mark">NOTESTACK</span>
+          <ThemeToggle />
         </div>
 
         <button className="profile-widget" onClick={onOpenSettings}>
@@ -130,7 +132,9 @@ export function Sidebar({
                 ) : (
                   <button
                     className={`nav-row folder-tab ${selectedFolderId === f.id ? "active" : ""}`}
-                    style={{ "--folder-color": folderColor(f.id) } as CSSProperties}
+                    style={
+                      { "--folder-color": folderColor(f.id) } as CSSProperties
+                    }
                     onClick={() => onSelectFolder(f.id)}
                   >
                     <span className="folder-dot" />
