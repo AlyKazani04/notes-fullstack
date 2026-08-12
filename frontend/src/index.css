@@ -12,6 +12,19 @@
   --danger: #a6432f;
   --blue: #6c87a6;
 }
+
+[data-theme='dark'] {
+  --paper: #1e2a2f;
+  --card: #2a3a40;
+  --ink: #fbfaf6;
+  --ink-soft: #a0b0b5;
+  --manila: #d99a3c;
+  --moss: #7b9b7a;
+  --rule: #3f5056;
+  --danger: #b6533f;
+  --blue: #8ca7c6;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -381,7 +394,7 @@ textarea {
 
 /* ---------- sidebar ---------- */
 .sidebar {
-  background: #e4e6df;
+  background: var(--card);
   border-right: 1px solid var(--rule);
   display: flex;
   flex-direction: column;
