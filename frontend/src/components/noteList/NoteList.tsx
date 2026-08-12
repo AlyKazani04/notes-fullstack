@@ -59,7 +59,7 @@ export function NoteList({
   const headerLabel =
     selectedFolderId === undefined
       ? "All notes"
-      : folders.find((f: Folder) => f.id === selectedFolderId)?.name || "Notes";
+      : folders.find((f: Folder) => f.id === selectedFolderId)?.name || "Your Notes";
 
   return (
     <section className={`note-list ${mobileHidden ? "mobile-hidden" : ""}`}>

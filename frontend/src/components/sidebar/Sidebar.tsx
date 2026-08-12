@@ -82,7 +82,7 @@ export function Sidebar({
       <div className="sidebar-scrim" onClick={onCloseMobile} />
       <div className="sidebar-inner">
         <div className="brand-row" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <span className="brand-mark">NOTES</span>
+          <span className="brand-mark">NOTESTACK</span>
           <ThemeToggle />
         </div>
 

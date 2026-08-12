@@ -2,10 +2,15 @@ import { useState } from "react";
 import { LoginForm } from "./LoginForm";
 import { RegisterForm } from "./RegisterForm";
 import type { Toast } from "../../hooks/useToasts";
+import { ThemeToggle } from "../common/ThemeToggle";
 
 interface AuthShellProps {
   onLogin: (email: string, password: string) => Promise<unknown>;
-  onRegister: (name: string, email: string, password: string) => Promise<unknown>;
+  onRegister: (
+    name: string,
+    email: string,
+    password: string,
+  ) => Promise<unknown>;
   pushToast: (message: string, type?: Toast["type"]) => void;
 }
 
@@ -16,7 +21,7 @@ export function AuthShell({ onLogin, onRegister, pushToast }: AuthShellProps) {
   return (
     <div className="auth-shell">
       <div className="auth-hero">
-        <div className="hero-mark">Notes App</div>
+        <div className="hero-mark">NOTESTACK</div>
         <div className="hero-cards" aria-hidden="true">
           <div className="hero-tab" />
           <div className="hero-card hc-3" />
@@ -34,6 +39,10 @@ export function AuthShell({ onLogin, onRegister, pushToast }: AuthShellProps) {
       </div>
 
       <div className="auth-panel">
+        <div className="auth-toggle">
+          <ThemeToggle />
+        </div>
+        <h2 className="auth-title">NoteStack</h2>
         <div className="auth-tabs" role="tablist">
           <button
             className={`auth-tab ${mode === "login" ? "active" : ""}`}
@@ -47,7 +56,6 @@ export function AuthShell({ onLogin, onRegister, pushToast }: AuthShellProps) {
           >
             New account
           </button>
-          <div className={`auth-tab-underline ${mode}`} />
         </div>
 
         {mode === "login" ? (

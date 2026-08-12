@@ -182,7 +182,7 @@ export default function App() {
             </div>
 
             <div className="mobile-shell-title">
-              {mobileShowEditor ? selectedNote?.title || "Note" : "Notes"}
+              {mobileShowEditor ? selectedNote?.title || "Note" : "Notestack"}
             </div>
           </header>
 
