@@ -1,6 +1,23 @@
-# Notes Fullstack
+# NoteStack
 
 A modern, secure, and lightning-fast full-stack note-taking application designed for seamless organization. Built with a robust TypeScript backend and a responsive React frontend.
+
+## Demo
+
+### Login / Registration Screen
+
+<img width="800px" src="public/demo/demo-pc.png" alt="Auth Screen on PC">
+<img height="600px" src="public/demo/demo-mobile.png" alt="Auth Screen on Mobile">
+
+### Dashboard
+
+#### Light
+
+<img width="800px" src="public/demo/demo-dash-light-pc.png" alt="Light Dashboard PC">
+
+#### Dark
+
+<img width="800px" src="public/demo/demo-dash-dark-pc.png" alt="Dark Dashboard PC">
 
 <details>
   <summary>Schema Explanation</summary>
@@ -176,9 +193,8 @@ Make sure you have the following installed on your machine:
 ### 1. Clone the Repository
 
 ```bash
-git clone [https://github.com/AlyKazani04/notes-fullstack.git](https://github.com/AlyKazani04/notes-fullstack.git)
+git clone https://github.com/AlyKazani04/notes-fullstack.git
 cd notes-fullstack
-
 ```
 
 ### 2. Environment Variables Setup
@@ -206,7 +222,6 @@ Create a `.env` file in the both directories from the `.env.example`s and config
 ```bash
 # Install dependencies in each dir separately
 npm install
-
 ```
 
 ### 4. Database Migration
@@ -216,7 +231,6 @@ Run Prisma migrations to set up your PostgreSQL schema:
 ```bash
 # in backend/
 npx prisma migrate dev --name init
-
 ```
 
 ### 5. Running the Application
@@ -239,7 +253,6 @@ Build and launch the entire application stack using a clean build to prevent vol
 docker compose down -v
 docker compose build --no-cache
 docker compose up
-
 ```
 
 Only the frontend development server will be available at `http://localhost:5173`.
