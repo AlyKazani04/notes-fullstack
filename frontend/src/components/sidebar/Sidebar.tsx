@@ -130,7 +130,9 @@ export function Sidebar({
                 ) : (
                   <button
                     className={`nav-row folder-tab ${selectedFolderId === f.id ? "active" : ""}`}
-                    style={{ "--folder-color": folderColor(f.id) } as CSSProperties}
+                    style={
+                      { "--folder-color": folderColor(f.id) } as CSSProperties
+                    }
                     onClick={() => onSelectFolder(f.id)}
                   >
                     <span className="folder-dot" />

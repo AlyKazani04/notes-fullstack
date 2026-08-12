@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Check, FileText, Menu, Plus, Search, Trash2 } from "lucide-react";
+import { Check, FileText, Plus, Search, Trash2 } from "lucide-react";
 import type { Note, Folder } from "../../types";
 import { NoteSkeleton } from "../common/Skeletons";
 import { folderColor } from "../../utils/helpers";
@@ -16,7 +16,6 @@ interface NoteListProps {
   onNewNote: () => Promise<void> | void;
   onBatchDelete: (ids: string[]) => Promise<void> | void;
   mobileHidden: boolean;
-  onOpenSidebar: () => void;
 }
 
 export function NoteList({
@@ -29,7 +28,6 @@ export function NoteList({
   onNewNote,
   onBatchDelete,
   mobileHidden,
-  onOpenSidebar,
 }: NoteListProps) {
   const [query, setQuery] = useState("");
   const [selectMode, setSelectMode] = useState(false);
@@ -66,9 +64,6 @@ export function NoteList({
   return (
     <section className={`note-list ${mobileHidden ? "mobile-hidden" : ""}`}>
       <div className="note-list-header">
-        <button className="icon-btn mobile-only" onClick={onOpenSidebar}>
-          <Menu size={18} />
-        </button>
         <h2>{headerLabel}</h2>
         <button
           className="btn btn-ghost btn-sm"
@@ -128,10 +123,12 @@ export function NoteList({
             <div
               key={n.id}
               className={`note-card ${selectedNoteId === n.id ? "active" : ""}`}
-              style={{
-                "--folder-color": folderColor(n.folderId || ""),
-                animationDelay: `${Math.min(i, 8) * 35}ms`,
-              } as CSSProperties}
+              style={
+                {
+                  "--folder-color": folderColor(n.folderId || ""),
+                  animationDelay: `${Math.min(i, 8) * 35}ms`,
+                } as CSSProperties
+              }
               onClick={() =>
                 selectMode ? toggleSelected(n.id) : onSelectNote(n.id)
               }

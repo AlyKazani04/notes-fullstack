@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { ArrowLeft, Menu, X } from "lucide-react";
 import { useAuth } from "./hooks/useAuth";
 import { useToasts } from "./hooks/useToasts";
 import { useData } from "./hooks/useData";
@@ -110,7 +111,10 @@ export default function App() {
   }
 
   async function handleBatchDelete(ids: string[]) {
-    const { deletedCount } = await batchDelete(ids, selectedFolderId ?? undefined);
+    const { deletedCount } = await batchDelete(
+      ids,
+      selectedFolderId ?? undefined,
+    );
     if (ids.includes(selectedNoteId!)) setSelectedNoteId(null);
     pushToast(
       `Deleted ${deletedCount} note${deletedCount === 1 ? "" : "s"}`,
@@ -151,6 +155,37 @@ export default function App() {
         />
       ) : (
         <div className="dashboard">
+          <header className="mobile-shell-bar">
+            <div className="mobile-shell-left">
+              {mobileShowEditor ? (
+                <button
+                  type="button"
+                  className="icon-btn mobile-only shell-action"
+                  aria-label="Back to notes"
+                  onClick={() => setMobileShowEditor(false)}
+                >
+                  <ArrowLeft size={18} />
+                </button>
+              ) : null}
+
+              <button
+                type="button"
+                className="icon-btn mobile-only shell-action"
+                aria-label={
+                  mobileSidebarOpen ? "Close sidebar" : "Open sidebar"
+                }
+                aria-expanded={mobileSidebarOpen}
+                onClick={() => setMobileSidebarOpen((open) => !open)}
+              >
+                {mobileSidebarOpen ? <X size={18} /> : <Menu size={18} />}
+              </button>
+            </div>
+
+            <div className="mobile-shell-title">
+              {mobileShowEditor ? selectedNote?.title || "Note" : "Notes"}
+            </div>
+          </header>
+
           <Sidebar
             user={user}
             folders={folders}
@@ -185,7 +220,6 @@ export default function App() {
             onNewNote={handleNewNote}
             onBatchDelete={handleBatchDelete}
             mobileHidden={mobileShowEditor}
-            onOpenSidebar={() => setMobileSidebarOpen(true)}
           />
 
           <Editor
@@ -194,7 +228,6 @@ export default function App() {
             onChange={handleNoteChange}
             onDelete={handleDeleteNote}
             mobileHidden={!mobileShowEditor}
-            onBack={() => setMobileShowEditor(false)}
           />
         </div>
       )}
