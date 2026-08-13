@@ -11,7 +11,7 @@
     "dev": "tsx watch src/index.ts",
     "build": "npm run prisma:generate && tsc -p tsconfig.build.json",
     "start": "node dist/src/index.js",
-    "prisma:generate": "rm -rf src/generated/zod && prisma generate",
+    "prisma:generate": "rm -rf src/generated/zod && prisma generate && node -e \"const fs = require('fs'); const f = 'src/generated/zod/index.ts'; fs.writeFileSync(f, fs.readFileSync(f, 'utf8').replace('../../prisma/client', '../prisma/client.js'));\"",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "keywords": [],
