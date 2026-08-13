@@ -7,9 +7,10 @@ import noteRoutes from './routes/noteRoutes.ts';
 import userRoutes from './routes/userRoutes.ts';
 import folderRoutes from './routes/folderRoutes.ts';
 import { errorHandler } from './errorHandler.ts';
+import env from '../env.ts';
 
 const CORS_OPTIONS = {
-  origin: 'http://localhost:5173',
+  origin: env.CORS_URL || 'http://localhost:5173',
   credentials: true,
   optionsSuccessStatus: 200,
 };

@@ -14,6 +14,8 @@ const envSchema = z.object({
 
   APP_STAGE: z.enum(['dev', 'test', 'production']).default('dev'),
 
+  CORS_URL: z.url().default('http://localhost:5173'),
+
   PORT: z.coerce.number().positive().default(3000),
 
   DATABASE_URL: z.string().startsWith('postgresql://'),
