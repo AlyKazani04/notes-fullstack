@@ -11,7 +11,7 @@
     "dev": "tsx watch src/index.ts",
     "build": "npm run prisma:generate && tsc -p tsconfig.build.json",
     "start": "node dist/src/index.js",
-    "prisma:generate": "prisma generate --generator client",
+    "prisma:generate": "rm -r src/generated/zod && prisma generate",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "keywords": [],
