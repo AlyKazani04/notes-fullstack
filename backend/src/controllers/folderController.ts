@@ -1,6 +1,6 @@
 import { Response } from 'express';
-import { AuthenticatedRequest } from "../middleware/auth";
-import { deleteFolder, getAllFolders, getFolderById, insertFolder, updateFolder } from '../db/folderQueries';
+import { AuthenticatedRequest } from "../middleware/auth.ts";
+import { deleteFolder, getAllFolders, getFolderById, insertFolder, updateFolder } from '../db/folderQueries.ts';
 
 // AuthenticatedRequest is given generic params in '../middleware/auth.ts'
 export const folderById = async (req: AuthenticatedRequest<{ id: string }>, res: Response) => {

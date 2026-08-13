@@ -2,13 +2,17 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  "main": "src/index.js",
+  "main": "dist/src/index.js",
   "engines": {
     "node": ">=22.0.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "tsx watch src/index.ts"
+    "dev": "tsx watch src/index.ts",
+    "build": "npm run prisma:generate && tsc -p tsconfig.build.json",
+    "start": "node dist/src/index.js",
+    "prisma:generate": "prisma generate --generator client",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "keywords": [],
   "author": "",
@@ -21,10 +25,11 @@
     "bcrypt": "^6.0.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
+    "custom-env": "^2.0.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
+    "helmet": "^8.2.0",
     "jsonwebtoken": "^9.0.3",
-    "typescript": "^7.0.2",
     "zod": "^4.4.3"
   },
   "devDependencies": {
@@ -33,10 +38,10 @@
     "@types/express": "^5.0.6",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^26.1.1",
-    "helmet": "^8.2.0",
     "prisma": "^7.8.0",
     "ts-node": "^10.9.2",
     "tsx": "^4.23.0",
+    "typescript": "^7.0.2",
     "zod-prisma-types": "^3.3.11"
   },
   "overrides": {

@@ -1,6 +1,6 @@
 import { Response } from 'express';
 import { AuthenticatedRequest } from '../middleware/auth.ts';
-import { deleteManyNotes, deleteNote, getNotes, postNote, updateNote } from '../db/noteQueries';
+import { deleteManyNotes, deleteNote, getNotes, postNote, updateNote } from '../db/noteQueries.ts';
 
 export const getUserNotes = async (req: AuthenticatedRequest, res: Response) => {
   if (!req.user || !req.user.id) {

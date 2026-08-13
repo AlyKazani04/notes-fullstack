@@ -1,7 +1,19 @@
 import "dotenv/config";
 import z from "zod";
 
+process.env.APP_STAGE = process.env.APP_STAGE || 'dev'
+
+// const isProduction = process.env.APP_STAGE === 'production'
+// const isDevelopment = process.env.APP_STAGE === 'dev'
+// const isTesting = process.env.APP_STAGE === 'test'
+
 const envSchema = z.object({
+  NODE_ENV: z
+    .enum(['dev', 'test', 'prod'])
+    .default('dev'),
+
+  APP_STAGE: z.enum(['dev', 'test', 'production']).default('dev'),
+
   PORT: z.coerce.number().positive().default(3000),
 
   DATABASE_URL: z.string().startsWith('postgresql://'),
@@ -13,27 +25,31 @@ const envSchema = z.object({
   BCRYPT_ROUNDS: z.coerce.number().min(10).max(20).default(12),
 })
 
-export type Env = z.infer<typeof envSchema>
+export type Env = z.infer<typeof envSchema>;
 let env: Env;
 
 try {
   env = envSchema.parse(process.env)
 } catch (e) {
   if (e instanceof z.ZodError) {
-    console.log('Invalid env var')
+    console.log('Invalid env var');
     console.error(e.flatten().fieldErrors);
     // console.error(z.treeifyError(e));
 
     e.issues.forEach((err) => {
-      const path = err.path.join('.')
-      console.log(`${path}: ${err.message}`)
+      const path = err.path.join('.');
+      console.log(`${path}: ${err.message}`);
     })
 
-    process.exit(1)
+    process.exit(1);
   }
 
-  throw e
+  throw e;
 }
 
-export { env }
-export default env
+export const isProd = () => env.APP_STAGE === 'production';
+export const isDev = () => env.APP_STAGE === 'dev';
+export const isTest = () => env.APP_STAGE === 'test';
+
+export { env };
+export default env;
