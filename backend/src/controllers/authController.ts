@@ -2,12 +2,12 @@ import { CookieOptions, Request, Response } from 'express';
 import { comparePasswords, hashPassword } from '../utils/passwords.ts';
 import { generateToken, UserSession } from '../utils/jwt.ts';
 import { getUserByEmail, insertUser } from '../db/userQueries.ts';
-import env from '../../env.ts';
+import env, { isProd } from '../../env.ts';
 
 const COOKIE_OPTIONS: CookieOptions = {
   httpOnly: true,
-  secure: env.NODE_ENV === 'prod',
-  sameSite: env.NODE_ENV === 'prod' ? 'none' : 'lax',
+  secure: isProd(),
+  sameSite: isProd() ? 'none' : 'lax',
   maxAge: 7 * 24 * 60 * 60 * 1000, // 1 week
 };
 

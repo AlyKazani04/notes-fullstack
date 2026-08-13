@@ -3,12 +3,12 @@ import { AuthenticatedRequest } from '../middleware/auth.ts';
 import { getUserByEmail, getUserByID, updateUser } from '../db/userQueries.ts';
 import bcrypt from 'bcrypt';
 import { comparePasswords, hashPassword } from '../utils/passwords.ts';
-import env from '../../env.ts';
+import env, { isProd } from '../../env.ts';
 
 const COOKIE_OPTIONS: CookieOptions = {
   httpOnly: true,
-  secure: env.NODE_ENV === 'prod',
-  sameSite: env.NODE_ENV === 'prod' ? 'none' : 'lax',
+  secure: isProd(),
+  sameSite: isProd() ? 'none' : 'lax',
 };
 
 export const logout = async (req: AuthenticatedRequest, res: Response) => {
