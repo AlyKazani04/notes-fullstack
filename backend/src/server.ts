@@ -18,6 +18,8 @@ const CORS_OPTIONS = {
 const app = express();
 app.use(cors(CORS_OPTIONS));
 app.use(helmet());
+app.set('trust proxy', 1);
+app.disable('x-powered-by');
 
 app.use(cookieParser());
 app.use(express.json());

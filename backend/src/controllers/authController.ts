@@ -1,7 +1,15 @@
-import { Request, Response } from 'express';
+import { CookieOptions, Request, Response } from 'express';
 import { comparePasswords, hashPassword } from '../utils/passwords.ts';
 import { generateToken, UserSession } from '../utils/jwt.ts';
 import { getUserByEmail, insertUser } from '../db/userQueries.ts';
+import env from '../../env.ts';
+
+const COOKIE_OPTIONS: CookieOptions = {
+  httpOnly: true,
+  secure: env.NODE_ENV === 'prod',
+  sameSite: env.NODE_ENV === 'prod' ? 'none' : 'lax',
+  maxAge: 7 * 24 * 60 * 60 * 1000, // 1 week
+};
 
 export const register = async (req: Request, res: Response) => {
   try {
@@ -26,11 +34,7 @@ export const register = async (req: Request, res: Response) => {
     };
     const token = generateToken(sessionDetails);
 
-    res.cookie('token', token, {
-      httpOnly: true,
-      sameSite: 'lax',
-      maxAge: 7 * 24 * 60 * 60 * 1000           // One Week Expiration
-    });
+    res.cookie('token', token, COOKIE_OPTIONS);
 
     return res.status(201).json({
       message: 'Server: User Created',
@@ -72,11 +76,7 @@ export const login = async (req: Request, res: Response) => {
       email: user.email
     });
 
-    res.cookie('token', token, {
-      httpOnly: true,
-      sameSite: 'lax',
-      maxAge: 7 * 24 * 60 * 60 * 1000           // One Week Expiration
-    });
+    res.cookie('token', token, COOKIE_OPTIONS);
 
     return res.status(200).json({
       message: 'Server: Login Success',
